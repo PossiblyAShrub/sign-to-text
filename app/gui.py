@@ -2,7 +2,7 @@ import sys
 import cv2
 import mss
 import numpy as np
-from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QTextEdit, QLabel, QScrollArea
+from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QTextEdit, QLabel, QScrollArea, QPushButton
 from PyQt6.QtCore import QTimer, Qt
 from PyQt6.QtGui import QImage, QPixmap
 
@@ -31,11 +31,25 @@ class MainWindow(QWidget):
         self.screen_timer.timeout.connect(self.update_screen_recording)
         self.screen_timer.start(100)  # Adjust the interval as needed
 
-        # Chat layout with title and text box
+        # Chat layout with title, text box, and translate button
         self.chat_layout = QVBoxLayout()  # Vertical layout for chat components
+
+        # Create a horizontal layout for the title and button
+        self.title_button_layout = QHBoxLayout()
+
+        # Chat title label
         self.chat_title = QLabel("Text I want to Sign:", self)
-        self.chat_title.setAlignment(Qt.AlignmentFlag.AlignCenter)  # Center the title
-        self.chat_layout.addWidget(self.chat_title)
+        self.chat_title.setAlignment(Qt.AlignmentFlag.AlignLeft)  # Align text to the left
+        self.title_button_layout.addWidget(self.chat_title)
+
+        # Translate button
+        self.translate_button = QPushButton("Translate", self)
+        self.title_button_layout.addWidget(self.translate_button)
+
+        # Add the horizontal layout to the chat layout
+        self.chat_layout.addLayout(self.title_button_layout)
+
+        # Chat textbox
         self.chat_textbox = QTextEdit(self)
         self.chat_layout.addWidget(self.chat_textbox)
 
@@ -63,8 +77,6 @@ class MainWindow(QWidget):
         self.timer.timeout.connect(self.update_frame)
         self.timer.start(30)
 
-        self.showFullScreen()
-
     def update_frame(self):
         ret, frame = self.cap.read()
         if ret:
@@ -79,8 +91,8 @@ class MainWindow(QWidget):
             aspect_ratio = width / height
 
             # Calculate new dimensions
-            label_width = self.webcam_label.width()
-            label_height = self.webcam_label.height()
+            label_width = 800#self.webcam_label.width()
+            label_height = 600#self.webcam_label.height()
             new_width, new_height = self.calculate_new_dimensions(label_width, label_height, aspect_ratio)
 
             # Resize the frame
