@@ -1,16 +1,18 @@
 import sys
+import os
 import cv2
 import mss
 import numpy as np
 from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QTextEdit, QLabel, QScrollArea, QPushButton
 from PyQt6.QtCore import QTimer, Qt
 from PyQt6.QtGui import QImage, QPixmap
-
-
+import text_image as ti
 
 class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
+
+        self.img = None
 
         # Main vertical layout
         self.main_layout = QVBoxLayout(self)
@@ -47,6 +49,7 @@ class MainWindow(QWidget):
         # Translate button
         self.translate_button = QPushButton("Translate", self)
         self.title_button_layout.addWidget(self.translate_button)
+        self.translate_button.clicked.connect(self.handle_translate_button)  # Connect button to handler
 
         # Add the horizontal layout to the chat layout
         self.chat_layout.addLayout(self.title_button_layout)
@@ -79,6 +82,36 @@ class MainWindow(QWidget):
         self.timer.timeout.connect(self.update_frame)
         self.timer.start(30)
 
+    def handle_translate_button(self):
+        # Get text from the chat textbox
+        text_to_translate = self.chat_textbox.toPlainText()
+        inp = text_to_translate.strip().split()
+
+        # Clear existing images from image_layout
+        self.clear_image_layout()
+
+        # Generate new image
+        self.img = ti.text2sign(inp)
+        self.save_image()
+        self.add_image("images/result.png")
+
+        # Clear the textbox
+        self.chat_textbox.clear()
+
+    def clear_image_layout(self):
+        """
+        Clear all widgets from the image_layout.
+        """
+        while self.image_layout.count():
+            item = self.image_layout.takeAt(0)
+            widget = item.widget()
+            if widget is not None:
+                widget.deleteLater()
+    
+    def save_image(self):
+        if self.img is not None:
+            cv2.imwrite('images/result.png', self.img)
+
     def update_frame(self):
         ret, frame = self.cap.read()
         if ret:
@@ -93,8 +126,8 @@ class MainWindow(QWidget):
             aspect_ratio = width / height
 
             # Calculate new dimensions
-            label_width = 800#self.webcam_label.width()
-            label_height = 600#self.webcam_label.height()
+            label_width = 1000#self.webcam_label.width()
+            label_height = 800#self.webcam_label.height()
             new_width, new_height = self.calculate_new_dimensions(label_width, label_height, aspect_ratio)
 
             # Resize the frame
@@ -146,9 +179,6 @@ class MainWindow(QWidget):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     main_win = MainWindow()
-
-    main_win.add_image("images/test_image.JPG")
-    main_win.add_image("images/test_image.JPG")
 
     main_win.show()
     sys.exit(app.exec())
