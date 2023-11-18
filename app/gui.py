@@ -6,6 +6,8 @@ from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QTe
 from PyQt6.QtCore import QTimer, Qt
 from PyQt6.QtGui import QImage, QPixmap
 
+
+
 class MainWindow(QWidget):
     def __init__(self):
         super().__init__()

@@ -36,5 +36,7 @@ def text2sign(words):
             img_list.append(cv.imread('text-image_data/space.png'))
 
     img = hconcat_resize(img_list)
-    cv.imwrite('result.png', img)
     return img
+
+inp = input().strip().split()
+text2sign(inp)
