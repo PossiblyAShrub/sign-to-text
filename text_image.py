@@ -38,5 +38,3 @@ def text2sign(words):
     img = hconcat_resize(img_list)
     return img
 
-inp = input().strip().split()
-text2sign(inp)
