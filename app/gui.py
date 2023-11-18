@@ -1,8 +1,10 @@
 import sys
-from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QTextEdit, QLabel, QScrollArea, QFrame, QHBoxLayout
+import cv2
+import mss
+import numpy as np
+from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QTextEdit, QLabel, QScrollArea
 from PyQt6.QtCore import QTimer, Qt
 from PyQt6.QtGui import QImage, QPixmap
-import cv2
 
 class MainWindow(QWidget):
     def __init__(self):
@@ -19,6 +21,15 @@ class MainWindow(QWidget):
         # Webcam label
         self.webcam_label = QLabel(self)
         self.top_layout.addWidget(self.webcam_label, 2)  # 2/3 of the space
+
+        # Label for screen recording
+        self.screen_recording_label = QLabel(self)
+        self.top_layout.addWidget(self.screen_recording_label, 1)  # Allocate space next to the webcam
+
+        # Timer for updating screen recording
+        self.screen_timer = QTimer(self)
+        self.screen_timer.timeout.connect(self.update_screen_recording)
+        self.screen_timer.start(100)  # Adjust the interval as needed
 
         # Chat layout with title and text box
         self.chat_layout = QVBoxLayout()  # Vertical layout for chat components
@@ -100,6 +111,23 @@ class MainWindow(QWidget):
         label.setPixmap(pixmap)
         label.setScaledContents(True)  # Scale the image to fit the label
         self.image_layout.addWidget(label)
+
+    def update_screen_recording(self):
+        with mss.mss() as sct:
+            # Specify the monitor number or the monitor part to capture
+            monitor = sct.monitors[1]  # You might need to adjust this for multiple monitors
+
+            # Capture the screen
+            screenshot = sct.grab(monitor)
+            screenshot = np.array(screenshot)
+
+            # Convert from BGR to RGB (mss captures in BGRA)
+            screenshot = cv2.cvtColor(screenshot, cv2.COLOR_BGRA2RGB)
+
+            # Resize and convert the screenshot to QPixmap
+            q_img = QImage(screenshot.data, screenshot.shape[1], screenshot.shape[0], QImage.Format.Format_RGB888)
+            pixmap = QPixmap.fromImage(q_img)
+            self.screen_recording_label.setPixmap(pixmap.scaled(self.screen_recording_label.size(), Qt.AspectRatioMode.KeepAspectRatio))
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
