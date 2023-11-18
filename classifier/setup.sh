@@ -15,4 +15,29 @@ setup-venv() {
   echo "/venv setup. Run 'source ./venv/bin/activate' to activate it."
 }
 
+download-dataset() {
+  while [[ ! -f $HOME/.kaggle/kaggle.json ]]; do
+    echo 'You do not have a ~/.kaggle file. Please follow the "Authentication"'
+    echo 'portion of: https://www.kaggle.com/docs/api'
+    read -p 'Press enter when you are done'
+  done
+
+  if [[ ! -f data/asl-alphabet.zip ]]; then
+    echo 'Downloading dataset'
+    kaggle datasets download -d grassknoted/asl-alphabet -p data
+  else
+    echo 'Dataset already downloaded'
+  fi
+
+  if [[ ! -r data/asl_alphabet_train ]]; then
+    echo 'Extracting dataset'
+    (cd data && unzip asl-alphabet.zip)
+  else
+    echo 'Dataset already extracted'
+  fi
+}
+
 setup-venv
+download-dataset
+
+echo 'Setup Complete'
