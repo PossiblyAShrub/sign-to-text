@@ -1,6 +1,6 @@
 import sys
 
-sys.path.append("classifier/src")
+sys.path.append("classifier")
 
 import cv2
 import mss
