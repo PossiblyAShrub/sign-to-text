@@ -3,4 +3,6 @@ data/
 .ipynb_checkpoints/
 __pycache__/
 
+images/view.png
+images/result.png
 model.pkz
