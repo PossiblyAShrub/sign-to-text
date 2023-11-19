@@ -61,11 +61,6 @@ class MainWindow(QWidget):
         self.translate_button.clicked.connect(
             self.handle_translate_button)  # Connect button to handler
 
-        # Check Input button
-        self.infer_button = QPushButton("Infer", self)
-        self.infer_button.clicked.connect(self.handle_infer_button)
-        self.title_button_layout.addWidget(self.infer_button)
-
         # Add the horizontal layout to the chat layout
         self.chat_layout.addLayout(self.title_button_layout)
 
@@ -119,7 +114,7 @@ class MainWindow(QWidget):
         # Clear the textbox
         self.chat_textbox.clear()
 
-    def handle_infer_button(self):
+    def run_inference(self):
         if self.latest_screenshot is None:
             return
 
@@ -150,6 +145,7 @@ class MainWindow(QWidget):
             frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
             self.latest_screenshot = Image.fromarray(frame_rgb)
+            self.run_inference()
 
             # Calculate aspect ratio of the frame
             height, width, _ = frame_rgb.shape
