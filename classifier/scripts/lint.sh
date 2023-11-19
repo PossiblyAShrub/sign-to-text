@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-source ./venv/bin/activate
-
-flake8 \
-  --max-line-length 140 \
-  --ignore E265,F541,F811,W504,E402,E126,E125,E251,W503,E226 \
-  $(git ls-files '*.py' | grep -v __init__.py)
