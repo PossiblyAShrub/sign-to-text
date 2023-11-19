@@ -12,7 +12,9 @@ can be set up with:
 ./setup.sh  # If you are not training, you can skip the ASL download
 ```
 
-Then grab a copy of `model.pkz` and put it in the root of the repository.
+Then grab a copy of `model.pkz` from [this
+release](https://github.com/PossiblyAShrub/sign-to-text/releases/tag/v1.0.0)
+and put it in the root of the repository.
 
 Finally, the application can be run as follows:
 
