@@ -16,7 +16,7 @@ class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.model = Model("model2.pkz")
+        self.model = Model("model.pkz")
         self.latest_screenshot = None
 
         self.img = None
