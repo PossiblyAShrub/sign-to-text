@@ -3,7 +3,7 @@ import torch.nn.functional as F
 import torchvision
 from PIL import Image
 
-from dataloader import preprocess_image
+from classifier.dataloader import preprocess_image
 
 
 class Model:

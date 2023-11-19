@@ -7,8 +7,8 @@ from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QTe
 from PyQt6.QtCore import QTimer, Qt
 from PyQt6.QtGui import QImage, QPixmap
 from PIL import Image
-import text_image as ti
-from estimator import Model
+import app.text_image as ti
+from classifier.estimator import Model
 
 
 class MainWindow(QWidget):
