@@ -23,6 +23,11 @@ source ./venv/bin/activate  # For MacOS/Linux
 python3 main.py
 ```
 
+## Resources
+
+Thanks to this helpful kaggle dataset for making this project possible:
+https://www.kaggle.com/datasets/grassknoted/asl-alphabet/data.
+
 ## License
 
 The contents of this project, unless stated otherwise, have been released under
