@@ -16,6 +16,13 @@ setup-venv() {
 }
 
 download-dataset() {
+  read -p 'Would you like to download the ASL dataset (1G)? [Ny] ' res
+  if ! [[ "$res" == "Y" || "$res" == "y" ]]; then
+    echo 'Skipping dataset download. You can always run this script again to download it'
+    return 0
+  fi
+
+
   while [[ ! -f $HOME/.kaggle/kaggle.json ]]; do
     echo 'You do not have a ~/.kaggle file. Please follow the "Authentication"'
     echo 'portion of: https://www.kaggle.com/docs/api'
