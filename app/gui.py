@@ -1,15 +1,23 @@
 import sys
+
+sys.path.append("classifier/src")
+
 import cv2
 import mss
 import numpy as np
 from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QTextEdit, QLabel, QScrollArea, QPushButton
 from PyQt6.QtCore import QTimer, Qt
 from PyQt6.QtGui import QImage, QPixmap
+from PIL import Image
 import text_image as ti
+from estimator import Model
 
 class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
+
+        self.model = Model("model2.pkz")
+        self.latest_screenshot = None
 
         self.img = None
 
@@ -49,6 +57,11 @@ class MainWindow(QWidget):
         self.translate_button = QPushButton("Translate", self)
         self.title_button_layout.addWidget(self.translate_button)
         self.translate_button.clicked.connect(self.handle_translate_button)  # Connect button to handler
+
+        # Check Input button
+        self.infer_button = QPushButton("Infer", self)
+        self.infer_button.clicked.connect(self.handle_infer_button)
+        self.title_button_layout.addWidget(self.infer_button)
 
         # Add the horizontal layout to the chat layout
         self.chat_layout.addLayout(self.title_button_layout)
@@ -101,6 +114,13 @@ class MainWindow(QWidget):
         # Clear the textbox
         self.chat_textbox.clear()
 
+    def handle_infer_button(self):
+        if self.latest_screenshot is None:
+            return
+
+        res = self.model.check(self.latest_screenshot)
+        self.signed_chat_textbox.append(res)
+
     def clear_image_layout(self):
         """
         Clear all widgets from the image_layout.
@@ -123,6 +143,8 @@ class MainWindow(QWidget):
 
             # Convert the frame from BGR to RGB
             frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+            self.latest_screenshot = Image.fromarray(frame_rgb)
 
             # Calculate aspect ratio of the frame
             height, width, _ = frame_rgb.shape

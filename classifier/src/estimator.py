@@ -8,13 +8,14 @@ from dataloader import preprocess_image
 
 class Model:
     def __init__(self, path: str):
+        self.device = "cuda" if torch.cuda.is_available() else "cpu"
+        print(self.device)
+
         with open(path, "rb") as f:
-            image_net, model, classes = pickle.load(f)
+            image_net, model, classes = torch.load(f, map_location=torch.device(self.device))
 
         image_net.eval()
         model.eval()
-
-        self.device = "cuda" if torch.cuda.is_available() else "cpu"
 
         image_net.to(self.device)
         model.to(self.device)
