@@ -1,5 +1,4 @@
 import sys
-import os
 import cv2
 import mss
 import numpy as np
@@ -91,9 +90,13 @@ class MainWindow(QWidget):
         self.clear_image_layout()
 
         # Generate new image
-        self.img = ti.text2sign(inp)
-        self.save_image()
-        self.add_image("images/result.png")
+        try:
+            self.img = ti.text2sign(inp)
+            cv2.imwrite('images/result.png', self.img)
+            self.save_image()
+            self.add_image("images/result.png")
+        except:
+            pass
 
         # Clear the textbox
         self.chat_textbox.clear()
@@ -176,9 +179,8 @@ class MainWindow(QWidget):
             pixmap = QPixmap.fromImage(q_img)
             self.screen_recording_label.setPixmap(pixmap.scaled(self.screen_recording_label.size(), Qt.AspectRatioMode.KeepAspectRatio))
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app = QApplication(sys.argv)
     main_win = MainWindow()
-
     main_win.show()
     sys.exit(app.exec())
