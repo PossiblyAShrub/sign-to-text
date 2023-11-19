@@ -20,7 +20,7 @@ Finally, the application can be run as follows:
 
 ```
 source ./venv/bin/activate  # For MacOS/Linux
-python3 app/gui.py
+python3 main.py
 ```
 
 ## License

@@ -1,7 +1,5 @@
 import sys
 
-sys.path.append("classifier")
-
 import cv2
 import mss
 import numpy as np
@@ -216,7 +214,7 @@ class MainWindow(QWidget):
                               Qt.AspectRatioMode.KeepAspectRatio))
 
 
-if __name__ == "__main__":
+def main():
     app = QApplication(sys.argv)
     main_win = MainWindow()
     main_win.show()
