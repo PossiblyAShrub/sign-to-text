@@ -7,12 +7,16 @@ import torchvision
 
 from dataloader import preprocess_image
 
+
 class Model:
+
     def __init__(self, path: str):
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
 
         with open(path, "rb") as f:
-            image_net, model, classes = torch.load(f, map_location=torch.device(self.device))
+            image_net, model, classes = torch.load(f,
+                                                   map_location=torch.device(
+                                                       self.device))
 
         image_net.eval()
         model.eval()

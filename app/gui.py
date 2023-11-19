@@ -12,7 +12,9 @@ from PIL import Image
 import text_image as ti
 from estimator import Model
 
+
 class MainWindow(QWidget):
+
     def __init__(self):
         super().__init__()
 
@@ -35,7 +37,8 @@ class MainWindow(QWidget):
 
         # Label for screen recording
         self.screen_recording_label = QLabel(self)
-        self.top_layout.addWidget(self.screen_recording_label, 1)  # Allocate space next to the webcam
+        self.top_layout.addWidget(self.screen_recording_label,
+                                  1)  # Allocate space next to the webcam
 
         # Timer for updating screen recording
         self.screen_timer = QTimer(self)
@@ -50,13 +53,15 @@ class MainWindow(QWidget):
 
         # Chat title label
         self.chat_title = QLabel("Text I want to Sign:", self)
-        self.chat_title.setAlignment(Qt.AlignmentFlag.AlignLeft)  # Align text to the left
+        self.chat_title.setAlignment(
+            Qt.AlignmentFlag.AlignLeft)  # Align text to the left
         self.title_button_layout.addWidget(self.chat_title)
 
         # Translate button
         self.translate_button = QPushButton("Translate", self)
         self.title_button_layout.addWidget(self.translate_button)
-        self.translate_button.clicked.connect(self.handle_translate_button)  # Connect button to handler
+        self.translate_button.clicked.connect(
+            self.handle_translate_button)  # Connect button to handler
 
         # Check Input button
         self.infer_button = QPushButton("Infer", self)
@@ -72,7 +77,8 @@ class MainWindow(QWidget):
 
         # Additional chat layout for signed text
         self.signed_chat_title = QLabel("Signed Text From Other Person", self)
-        self.signed_chat_title.setAlignment(Qt.AlignmentFlag.AlignCenter)  # Center the title
+        self.signed_chat_title.setAlignment(
+            Qt.AlignmentFlag.AlignCenter)  # Center the title
         self.chat_layout.addWidget(self.signed_chat_title)
         self.signed_chat_textbox = QTextEdit(self)
         self.chat_layout.addWidget(self.signed_chat_textbox)
@@ -83,7 +89,8 @@ class MainWindow(QWidget):
         # Scroll area for images
         self.scroll_area = QScrollArea(self)
         self.image_container = QWidget()  # Container widget for images
-        self.image_layout = QHBoxLayout(self.image_container)  # Horizontal layout for images
+        self.image_layout = QHBoxLayout(
+            self.image_container)  # Horizontal layout for images
         self.scroll_area.setWidget(self.image_container)
         self.scroll_area.setWidgetResizable(True)
         self.main_layout.addWidget(self.scroll_area)
@@ -130,7 +137,7 @@ class MainWindow(QWidget):
             widget = item.widget()
             if widget is not None:
                 widget.deleteLater()
-    
+
     def save_image(self):
         if self.img is not None:
             cv2.imwrite('images/result.png', self.img)
@@ -151,21 +158,24 @@ class MainWindow(QWidget):
             aspect_ratio = width / height
 
             # Calculate new dimensions
-            label_width = 1000#self.webcam_label.width()
-            label_height = 800#self.webcam_label.height()
-            new_width, new_height = self.calculate_new_dimensions(label_width, label_height, aspect_ratio)
+            label_width = 1000  #self.webcam_label.width()
+            label_height = 800  #self.webcam_label.height()
+            new_width, new_height = self.calculate_new_dimensions(
+                label_width, label_height, aspect_ratio)
 
             # Resize the frame
             frame_resized = cv2.resize(frame_rgb, (new_width, new_height))
 
             # Convert the resized frame to QPixmap
-            q_img = QImage(frame_resized.data, new_width, new_height, QImage.Format.Format_RGB888)
+            q_img = QImage(frame_resized.data, new_width, new_height,
+                           QImage.Format.Format_RGB888)
             pixmap = QPixmap.fromImage(q_img)
 
             # Set the QPixmap to the label
             self.webcam_label.setPixmap(pixmap)
 
-    def calculate_new_dimensions(self, label_width, label_height, aspect_ratio):
+    def calculate_new_dimensions(self, label_width, label_height,
+                                 aspect_ratio):
         """
         Calculate new dimensions for the frame to fit into the label without losing aspect ratio.
         """
@@ -175,7 +185,7 @@ class MainWindow(QWidget):
         else:
             # Fit to height
             return int(label_height * aspect_ratio), label_height
-    
+
     def add_image(self, image_path):
         """Add an image to the scroll area."""
         pixmap = QPixmap(image_path)
@@ -187,7 +197,8 @@ class MainWindow(QWidget):
     def update_screen_recording(self):
         with mss.mss() as sct:
             # Specify the monitor number or the monitor part to capture
-            monitor = sct.monitors[1]  # You might need to adjust this for multiple monitors
+            monitor = sct.monitors[
+                1]  # You might need to adjust this for multiple monitors
 
             # Capture the screen
             screenshot = sct.grab(monitor)
@@ -197,9 +208,13 @@ class MainWindow(QWidget):
             screenshot = cv2.cvtColor(screenshot, cv2.COLOR_BGRA2RGB)
 
             # Resize and convert the screenshot to QPixmap
-            q_img = QImage(screenshot.data, screenshot.shape[1], screenshot.shape[0], QImage.Format.Format_RGB888)
+            q_img = QImage(screenshot.data, screenshot.shape[1],
+                           screenshot.shape[0], QImage.Format.Format_RGB888)
             pixmap = QPixmap.fromImage(q_img)
-            self.screen_recording_label.setPixmap(pixmap.scaled(self.screen_recording_label.size(), Qt.AspectRatioMode.KeepAspectRatio))
+            self.screen_recording_label.setPixmap(
+                pixmap.scaled(self.screen_recording_label.size(),
+                              Qt.AspectRatioMode.KeepAspectRatio))
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

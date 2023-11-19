@@ -14,6 +14,7 @@ preprocess_image = transforms.Compose([
     transforms.ToTensor(),
 ])
 
+
 class AslDataset(Dataset):
     classes: List[str]
     data: List[Tuple[int, str]]
@@ -35,6 +36,7 @@ class AslDataset(Dataset):
             pixels = preprocess_image(im)
 
         return {"label": label, "image": pixels}
+
 
 class AslTestDataset(Dataset):
     data: List[Tuple[int, str]]
