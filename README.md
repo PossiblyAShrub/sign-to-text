@@ -13,7 +13,7 @@ can be set up with:
 ```
 
 Then grab a copy of `model.pkz` from [this
-release](https://github.com/PossiblyAShrub/sign-to-text/releases/tag/v1.0.0)
+release](https://github.com/PossiblyAShrub/sign-to-text/releases/download/v1.0.1/model.pkz)
 and put it in the root of the repository.
 
 Finally, the application can be run as follows:
