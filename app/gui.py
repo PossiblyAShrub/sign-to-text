@@ -115,7 +115,7 @@ class MainWindow(QWidget):
             cv2.imwrite('images/result.png', self.img)
             self.save_image()
             self.add_image("images/result.png")
-        except:
+        except Exception:
             pass
 
         # Clear the textbox
@@ -158,8 +158,8 @@ class MainWindow(QWidget):
             aspect_ratio = width / height
 
             # Calculate new dimensions
-            label_width = 1000  #self.webcam_label.width()
-            label_height = 800  #self.webcam_label.height()
+            label_width = 1000  # self.webcam_label.width()
+            label_height = 800  # self.webcam_label.height()
             new_width, new_height = self.calculate_new_dimensions(
                 label_width, label_height, aspect_ratio)
 

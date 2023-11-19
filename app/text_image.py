@@ -25,18 +25,16 @@ def text2sign(words):
     for word in words:
         count += 1
         for i in word:
-            if i in characters: continue
+            if i in characters:
+                continue
+
             alphabet = i.upper()
             alpha_img = cv.imread('text-image_data/' + alphabet + '.png')
-            shape = alpha_img.shape
             cv.resize(alpha_img, (150, 250), interpolation=cv.INTER_LINEAR)
             img_list.append(alpha_img)
+
         if count != len(words):
             img_list.append(cv.imread('text-image_data/space.png'))
 
     img = hconcat_resize(img_list)
     return img
-
-
-#inp = input().strip().split()
-#text2sign(inp)

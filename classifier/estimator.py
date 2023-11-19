@@ -1,9 +1,7 @@
-import pickle
-from PIL import Image
-
 import torch
 import torch.nn.functional as F
 import torchvision
+from PIL import Image
 
 from dataloader import preprocess_image
 
